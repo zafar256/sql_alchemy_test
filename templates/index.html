@@ -1,12 +1,119 @@
-<form action="">
+{% extends "layout.html" %}
 
-    <label for="">Name</label><br>
-    <input type="text" value="" name="name">
-    <br><br>
-    <label for="">Email</label><br>
-    <input type="text" value="" name="email">
-    <br><br>
-    <label for="">Phone number</label>
-    <input type="text" value="" name="phonenumber">
 
-</form>
+{% block title %}SQL ALCHEMY TEST{% endblock %}
+
+{% block content %}
+
+<!-- adding users to table using a modal form-->
+
+<!-- Button trigger modal -->
+<div class="mymodal container">
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Add User
+    </button>
+
+    <!-- Modal -->
+    <div class="modal fade modalsize" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Add User</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <form action="/" method="POST" class="mymodalbody row gy-2 gx-3 align-items-center">
+
+                        <label for="">Full Name</label>
+                        <input type="text" placeholder="Full Name" name="name" required>
+
+                        <label for="">Email</label>
+                        <input type="email" placeholder="Email" name="email" required>
+
+                        <label for="">Phone number</label>
+                        <input type="number" placeholder="Phone number" name="phonenumber" required>
+
+                        <!-- <div class="modal-footer"> -->
+                        <input type="submit" class="btn btn-primary"></input>
+                        <!-- </div> -->
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- users table -->
+<div class="container productable">
+    <table id="myTable" class="display" border="2">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Phone number</th>
+                <!-- th for editing -->
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in users %}
+            <tr>
+                <td>{{p.id}}</td>
+                <td>{{p.name}}</td>
+                <td>{{p.email}}</td>
+                <td>{{p.phonenumber}}</td>
+                <td>
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                        data-bs-target="#exampleModal{{p.id}}">
+                        Edit
+                    </button>
+
+                    <!-- modal form to edit users -->
+
+                    <div class="modal fade" id="exampleModal{{p.id}}" tabindex="-1" aria-labelledby="exampleModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Edit user</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <form action="/update/{{ p.id }}" method="POST"
+                                        class="row gy-2 gx-3 align-items-center">
+
+                                        <input type="hidden" name="id" value="{{p.id}}">
+
+                                        <label for="name">Full Name:</label>
+                                        <input value="{{p.name}}" type="text" name="name" required><br><br>
+                                        <label for="email">Email</label>
+                                        <input value="{{p.email}}" type="email" name="email" required><br><br>
+                                        <label for="phonenumber">Phone number</label>
+                                        <input value="{{p.phonenumber}}" type="number" name="phonenumber" step="0.01"
+                                            required><br><br>
+
+                                        <button type="submit" class="btn btn-primary">Update</button>
+
+                                    </form>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+
+{% endblock %}
